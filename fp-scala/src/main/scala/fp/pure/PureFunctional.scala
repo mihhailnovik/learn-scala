@@ -102,15 +102,8 @@ object PureFunctional extends App {
       sequence(List.fill(count)(int))
     }
 
-    //def map[A, B](s: Rand[A])(f: A => B): Rand[B]
-    /*
-     rng => {
-        val (a, rng2) = s(rng)
-        (f(a), rng2)
-      }
-     */
     // EXERCISE 9:
-    def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = {
+    def flatMap[A, B](f: Rand[A])(g: A => Rand[B]): Rand[B] = {
       rng => {
         val (a, rng1) = f(rng)
         g(a)(rng1)
@@ -123,14 +116,44 @@ object PureFunctional extends App {
 
     // EXERCISE 10:
     def map[A, B](s: Rand[A])(f: A => B): Rand[B] = {
-      flatMap(s) ( a => unit(f(a)))
+      flatMap(s)(a => unit(f(a)))
     }
 
     def map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = {
-      flatMap(ra) (a => map(rb)(b => f(a,b)))
+      flatMap(ra)(a => map(rb)(b => f(a, b)))
+    }
+    // EXERCISE 11: Generalize the functions unit, map, map2, flatMap
+    case class State[S, +A](run: S => (A, S)) {
+      def map[B](f: A => B) : State[S, B] = {
+        State(result => {
+          val (a1, s1) = run(result)
+          (f(a1), s1)
+        })
+      }
+      def flatMap[B](f: A => State[S, B]): State[S, B] = {
+        State(result => {
+          val (a1, s1) = run(result)
+          f(a1).run(s1)
+        })
+      }
+      def map2[B,C](sb: State[S, B])(f: (A, B) => C): State[S, C] = {
+        State(result => {
+          val (a1, s1) = run(result)
+          val (b1, s2) = sb.run(s1)
+          (f(a1, b1), s2)
+        })
+      }
     }
 
+    object State {
+      def unit[S, A](a: A): State[S, A] = State(s => (a, s))
+      def sequence[S,A](fs: List[Rand[A]]): Rand[List[A]] = {
+        fs.foldRight(unit[S, List[A]](List()))((f, acc) => f.map2(acc)(_ :: _))
+      }
+    }
+
+    type RandState[A] = State[RNG, A]
+
   }
-  val numbers = List(1,2,3,4,5,6,7,8,9,10)
-  println(RNG.intsWithSequence(3))
+
 }
