@@ -1,7 +1,5 @@
 package practice.algorithms.sorting;
 
-import java.util.*;
-
 public class Correctness {
 
     public static void insertionSort(int[] a) {
