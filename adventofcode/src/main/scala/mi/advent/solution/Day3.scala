@@ -1,6 +1,5 @@
 package mi.advent.solution
 
-import scala.io.Source
 
 case class Claim(id: String, x1: Int, y1: Int, x2: Int, y2: Int) {
   def coord: Seq[(Int, Int)] = for (i <- x1 to x2; y <- y1 to y2) yield (i, y)
@@ -15,9 +14,8 @@ object Claim {
   }
 }
 
-object Day3 extends App {
-  val fileLocation = "/home/mihhailnovik/programming/scala/learn-scala/adventofcode/src/main/resources/day3.txt"
-  val claims: List[Claim] = Source.fromFile(fileLocation).getLines.map(Claim(_)).toList
+object Day3 extends Day(3) {
+  val claims: List[Claim] = lines.map(Claim(_))
   type Cord = (Int, Int)
   type CordToId = Map[Cord, String]
   type ResultMapAcc = (CordToId, Set[String])
@@ -56,10 +54,7 @@ object Day3 extends App {
   }
 
   val part1Solution = overlaps(claims)
-  println(part1Solution)
-
-
   val part2Solution = notOverlaped(claims)
-  println(part2Solution)
 
+  printSolution
 }
