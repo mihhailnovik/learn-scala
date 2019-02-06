@@ -12,6 +12,8 @@ abstract class Day(day: Int) extends App {
 
   def part2Solution: Any
 
-  protected def printSolution: Unit = println("Part A = " + part1Solution + "\n" +
+  protected def printSolution(): Unit = println("Part A = " + part1Solution + "\n" +
     "Part B = " + part2Solution)
+
+  def testData = ""
 }
