@@ -1,5 +1,6 @@
-object Day1 extends AoCPuzzle {
+class Day1 extends AoCPuzzle {
   override def dayNr: Int = 1
+  override def active(): Boolean = true
 
   private val elvesFoodTotalAmount: Array[Int] = getData().map {
     case "" => "-"
