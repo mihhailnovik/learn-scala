@@ -3,8 +3,6 @@ import java.awt.Choice
 class Day2 extends AoCPuzzle {
   override def dayNr: Int = 2
 
-  override def active(): Boolean = true
-
   private val data = getData().map(_.split(" "))
 
   override def part1Answer(): String = {
