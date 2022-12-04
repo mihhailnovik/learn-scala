@@ -1,6 +1,6 @@
 @main def main: Unit = {
 
-  val days = List(new Day1(), new Day2(), new Day3())
+  val days = List(new Day1(), new Day2(), new Day3(), new Day4())
 
   days.collect {
     day =>
