@@ -3,8 +3,6 @@ import scala.util.Try
 class Day5 extends AoCPuzzle {
   override def dayNr: Int = 5
 
-  override def active(): Boolean = true
-
   case class Action(amount: Int, from: Int, to: Int)
 
   private def parseInput() = {
