@@ -1,8 +1,6 @@
 class Day4 extends AoCPuzzle {
   override def dayNr: Int = 4
 
-  override def active(): Boolean = true
-
   private val pattern = "([0-9]+)-([0-9]+),([0-9]+)-([0-9]+)".r
   private val formattedInput = getData().map {
     str => {

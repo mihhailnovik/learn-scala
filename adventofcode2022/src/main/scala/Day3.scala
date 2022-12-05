@@ -1,7 +1,6 @@
 class Day3 extends AoCPuzzle {
   override def dayNr: Int = 3
 
-  override def active(): Boolean = true
   def score(s: Char): Int = if (s.isUpper) s.toInt - 38 else s.toInt - 96
 
   override def part1Answer(): String = {
