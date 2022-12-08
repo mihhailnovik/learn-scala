@@ -73,5 +73,9 @@ class Day7 extends AoCPuzzle {
     localRoot.folders().map(size).filter(_ < 100000).sum.toString
   }
 
-  override def part2Answer(): String = "findMarker(14).toString"
+  override def part2Answer(): String = {
+    val localRoot = processCommands(commands, root).getRoot()
+    val toDelete = 30000000 - (70000000 - size(localRoot))
+    localRoot.folders().map(size).filter(_ > toDelete).min.toString
+  }
 }
