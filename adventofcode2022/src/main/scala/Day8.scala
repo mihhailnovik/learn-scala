@@ -4,7 +4,7 @@ import scala.collection.mutable.Map
 class Day8 extends AoCPuzzle {
   override def dayNr: Int = 8
 
-  override def active(): Boolean = true
+  override def active(): Boolean = false
 
   val input = getData().map(_.toCharArray.map(_.toString.toInt)).toArray
 
@@ -39,7 +39,12 @@ class Day8 extends AoCPuzzle {
     }
   }
 
-  sealed trait Direction
+  object Direction {
+    def all(): List[Direction] = List(Right, Left, Top, Bottom)
+  }
+  sealed trait Direction {
+
+  }
 
   object Right extends Direction
 
@@ -49,33 +54,37 @@ class Day8 extends AoCPuzzle {
 
   object Bottom extends Direction
 
-  private def isVisible(threeHeight: Int, coordinate: Coordinate, directions: List[Direction], forrest: Forrest): Boolean = {
-    if (forrest.isEdge(coordinate)) true else {
-      directions exists {
-        direction => {
-          val newCoordinate = coordinate.move(direction)
-          val sideTree = forrest.value(newCoordinate)
-          threeHeight > sideTree && isVisible(threeHeight, newCoordinate, List(direction), forrest)
-        }
-      }
+
+  private def countVisibleTrees(treeHeight: Int, coordinate: Coordinate, direction: Direction, forrest: Forrest, acc: Int): Int = {
+    if (forrest.isEdge(coordinate)) acc else {
+      val newCoordinate = coordinate.move(direction)
+      val sideTree = forrest.value(newCoordinate)
+      if (treeHeight == sideTree) acc + 1 else if (treeHeight > sideTree) {
+        countVisibleTrees(treeHeight, newCoordinate, direction, forrest, (acc + 1))
+      } else acc + 1
     }
   }
 
   override def part1Answer(): String = {
-    var counter = 0
     val forrest = Forrest(input)
+    var buffer = mutable.ListBuffer[Int]()
     for (x <- input.indices) {
       for (y <- input.indices) {
         val coordinate = Coordinate(X(x), Y(y))
         val height = forrest.value(coordinate)
-        if (isVisible(height, coordinate, List(Right, Left, Top, Bottom), forrest)) {
-          counter += 1
-        } else {
-          println("NOT VISIBLE(" + input(y)(x) + ") " + x + " _ " + y)
-        }
+        val scores = Direction.all().map(countVisibleTrees(height, coordinate, _, forrest, 0))
+        println(s"scores $coordinate= "+scores)
+        val scenicScore = scores.filter( _ != 0).product
+
+        buffer = buffer.addOne(scenicScore)
+//        if (countVisibleTrees(height, coordinate, List(Right, Left, Top, Bottom), forrest)) {
+//          counter += 1
+//        } else {
+//          println("NOT VISIBLE(" + input(y)(x) + ") " + x + " _ " + y)
+//        }
       }
     }
-    counter.toString
+    buffer.max.toString
   }
 
   override def part2Answer(): String =
