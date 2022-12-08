@@ -10,21 +10,17 @@ class Day8 extends AoCPuzzle {
 
   case class Forrest(data: Array[Array[Int]]) {
     private val length = data.length - 1
-
     def value(coordinate: Coordinate): Int = data(coordinate.y.value)(coordinate.x.value)
-
     def isEdge(coordinate: Coordinate): Boolean = List(0, length).contains(coordinate.x.value) || List(0, length).contains(coordinate.y.value)
   }
 
   case class X(value: Int) {
     def left = X(value - 1)
-
     def right = X(value + 1)
   }
 
   case class Y(value: Int) {
     def top = Y(value - 1)
-
     def bottom = Y(value + 1)
   }
 
@@ -42,9 +38,7 @@ class Day8 extends AoCPuzzle {
   object Direction {
     def all(): List[Direction] = List(Right, Left, Top, Bottom)
   }
-  sealed trait Direction {
-
-  }
+  sealed trait Direction
 
   object Right extends Direction
 
@@ -73,15 +67,8 @@ class Day8 extends AoCPuzzle {
         val coordinate = Coordinate(X(x), Y(y))
         val height = forrest.value(coordinate)
         val scores = Direction.all().map(countVisibleTrees(height, coordinate, _, forrest, 0))
-        println(s"scores $coordinate= "+scores)
         val scenicScore = scores.filter( _ != 0).product
-
         buffer = buffer.addOne(scenicScore)
-//        if (countVisibleTrees(height, coordinate, List(Right, Left, Top, Bottom), forrest)) {
-//          counter += 1
-//        } else {
-//          println("NOT VISIBLE(" + input(y)(x) + ") " + x + " _ " + y)
-//        }
       }
     }
     buffer.max.toString
