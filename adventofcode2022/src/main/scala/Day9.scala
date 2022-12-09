@@ -50,10 +50,9 @@ class Day9 extends AoCPuzzle {
   case class Move(direction: String, amount: Int)
 
   val moves: Seq[Move] = getData().map(_.split(" ")).map(s => Move(s(0), s(1).toInt))
-  val field = Field()
 
-  case class Field() {
-    val knots: Array[Knot] = Array.fill[Knot](10){
+  case class Field(knotNr: Int) {
+    val knots: Array[Knot] = Array.fill[Knot](knotNr){
       Knot(Coordinate(X(0), Y(0)))
     }
 
@@ -73,8 +72,6 @@ class Day9 extends AoCPuzzle {
         }
       }
     }
-
-
 
     def moveKnot(direction: String, knot: Knot) : Knot = {
       direction match {
@@ -185,11 +182,18 @@ class Day9 extends AoCPuzzle {
   }
 
   override def part1Answer(): String = {
+    val field = Field(2)
     moves.foreach {
       move => field.move(move)
     }
     field.knots.last.history.size.toString
   }
 
-  override def part2Answer(): String = "???"
+  override def part2Answer(): String = {
+    val field = Field(10)
+    moves.foreach {
+      move => field.move(move)
+    }
+    field.knots.last.history.size.toString
+  }
 }
