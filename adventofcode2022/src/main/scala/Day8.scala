@@ -4,8 +4,6 @@ import scala.collection.mutable.Map
 class Day8 extends AoCPuzzle {
   override def dayNr: Int = 8
 
-  override def active(): Boolean = true
-
   private val input = getData().map(_.toCharArray.map(_.toString.toInt)).toArray
   private val forrest = Forrest(input)
 
