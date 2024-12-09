@@ -8,5 +8,5 @@ trait AoCPuzzle {
   def part1Answer(): String
   def part2Answer(): String
 
-  def active(): Boolean = true
+  def active(): Boolean = false
 }

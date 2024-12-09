@@ -27,5 +27,4 @@ class Day1 extends AoCPuzzle {
 
   private def toNumber(str: String): Int = numbersAndWords.getOrElse(str, 0)
 
-  override def active(): Boolean = false
 }

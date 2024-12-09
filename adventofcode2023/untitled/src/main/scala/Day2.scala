@@ -32,5 +32,4 @@ class Day2 extends AoCPuzzle {
     getData().map(powerOfMinimum).sum.toString
   }
 
-  override def active(): Boolean = false
 }
